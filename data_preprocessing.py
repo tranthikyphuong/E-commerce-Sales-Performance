@@ -60,5 +60,5 @@ productDetails.dropna()
 
 #Export file csv 
 Ecommerece_sales_data = eCommeteceSales.to_csv('SaleData.csv', index = False, encoding = 'utf-8-sig')
-customer_details = customerDetails.to_csv('customer.csv', index = False, encoding = 'utf-8-sig')
-product_details = productDetails.to_csv('product.csv', index = False, encoding = 'utf-8-sig')
+customer_details = customerDetails.to_csv('Customer.csv', index = False, encoding = 'utf-8-sig')
+product_details = productDetails.to_csv('Product.csv', index = False, encoding = 'utf-8-sig')
