@@ -1,10 +1,10 @@
 -- Establish relationships between tables
--- ALTER TABLE salesdata ADD CONSTRAINT  fk_customer
--- FOREIGN KEY userid 
--- REFERENCES customerdetails(customerid);
--- ALTER TABLE salesdata ADD CONSTRAINT  fk_product
--- FOREIGN KEY productid 
--- REFERENCES productdetails(uniqeid);
+ALTER TABLE salesdata ADD CONSTRAINT  fk_customer
+FOREIGN KEY userid 
+REFERENCES customerdetails(customerid);
+ALTER TABLE salesdata ADD CONSTRAINT  fk_product
+FOREIGN KEY productid 
+REFERENCES productdetails(uniqeid);
 -- Retrieve the list of top-selling products
 WITH ProductSales AS (
     SELECT s.productID, p.productName, COUNT(*) AS TotalSales
@@ -49,8 +49,12 @@ WITH SeasonalPurchases AS (
 )
 SELECT * FROM SeasonalPurchases
 ORDER BY TotalPurchases DESC;
--- CREATE TABLE Overview AS
-SELECT c.timestamp, c.customerid, c.category, 
+-- Create Table Overview
+CREATE TABLE Overview AS ( 
+SELECT  c.customerid, c.category, c.location,
+         p.uniqeid, p.subcategory,c.purchaseamount, s.timestamp
 FROM SalesData s
-JOIN CustomerDetails c ON s.userID = c.CustomerID
-GROUP BY YEAR(s.timeStamp), MONTH(s.timeStamp), c.Location;
+RIGHT JOIN CustomerDetails c ON s.userID = c.CustomerID
+RIGHT JOIN ProductDetails p ON s.productid = p.uniqeid
+);
+
