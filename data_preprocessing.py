@@ -3,6 +3,8 @@ import pandas as pd
 import csv
 from scipy import stats
 import seaborn as sns
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.preprocessing import LabelEncoder
 import matplotlib.pyplot as plt
 
 def detect_outliers_zscore(data,columns):
@@ -30,23 +32,6 @@ print(eCommeteceSales)
 print("User id check duplicate: ",eCommeteceSales['user id'].duplicated())
 print("Product id check duplicate: ",eCommeteceSales['product id'].duplicated())
 
-#Customer details
-customerDetails = pd.read_csv('C:/Users/PC KY PHUONG/OneDrive/Documents/Project SQL/Data_/customer_details.csv')
-
-customerDetails.info()
-customerDetails.isnull().sum()
-customerDetails.dropna()
-print("Customer id check duplicate: ",customerDetails['Customer ID'].duplicated())
-
-numeric_columns = customerDetails.select_dtypes(include=['number']).columns
-detect_outliers_zscore(customerDetails,numeric_columns)
-
-plt.figure(figsize = (12,6))
-sns.boxplot(data=customerDetails[numeric_columns])
-plt.xticks(rotation = 45)
-plt.title("Boxplot check")
-plt.show()
-
 #product_details
 productDetails = pd.read_csv('C:/Users/PC KY PHUONG/OneDrive/Documents/Project SQL/Data_/product_details.csv')
 
@@ -57,7 +42,50 @@ remove=['Stock','Product Details','Dimensions','Color','Ingredients','Direction 
 'Product Specification','Model Number','About Product','Technical Details','Selling Price']
 productDetails.drop(columns=remove,inplace=True)
 productDetails.dropna()
+#Customer details
+customerDetails = pd.read_csv('C:/Users/PC KY PHUONG/OneDrive/Documents/Project SQL/Data_/customer_details.csv')
 
+customerDetails.info()
+customerDetails.isnull().sum()
+customerDetails.dropna()
+print("Customer id check duplicate: ",customerDetails['Customer ID'].duplicated())
+
+numeric_columns = customerDetails.select_dtypes(include=['number']).columns
+detect_outliers_zscore(customerDetails,numeric_columns)
+print(customerDetails)
+# Predict value
+
+le_category = LabelEncoder()
+customerDetails['category_encoded'] = le_category.fit_transform(customerDetails['category'])
+
+le_item = LabelEncoder()
+customerDetails['item_encoded'] = le_item.fit_transform(customerDetails['itempurchased'])
+
+customerDetails_train = customerDetails[customerDetails['subcategory'].notnull()]
+customerDetails_missing = customerDetails[customerDetails['subcategory'].isnull()]
+
+le_subcategory = LabelEncoder()
+customerDetails_train['subcategory_encoded'] = le_subcategory.fit_transform(customerDetails_train['subcategory'])
+
+X_train = customerDetails_train[['category_encoded', 'item_encoded']]
+y_train = customerDetails_train['subcategory_encoded']
+
+model = RandomForestClassifier(n_estimators=100, random_state=42)
+model.fit(X_train, y_train)
+
+customerDetails_missing['subcategory_encoded'] = model.predict(customerDetails_missing[['category_encoded', 'item_encoded']])
+customerDetails_missing['subcategory'] = le_subcategory.inverse_transform(customerDetails_missing['subcategory_encoded'])
+
+
+# Cập nhật lại dữ liệu
+customerDetails.update(customerDetails_missing)
+print(customerDetails)
+
+plt.figure(figsize = (12,6))
+sns.boxplot(data=customerDetails[numeric_columns])
+plt.xticks(rotation = 45)
+plt.title("Boxplot check")
+plt.show()
 #Export file csv 
 Ecommerece_sales_data = eCommeteceSales.to_csv('SaleData.csv', index = False, encoding = 'utf-8-sig')
 customer_details = customerDetails.to_csv('Customer.csv', index = False, encoding = 'utf-8-sig')
