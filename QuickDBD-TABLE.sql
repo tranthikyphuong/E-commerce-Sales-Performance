@@ -4,11 +4,11 @@
 
 
 CREATE TABLE "ProductDetails" (
-    "UniqeID" STRING   NOT NULL,
-    "productName" STRING   NOT NULL,
-    "category" STRING   NOT NULL,
-    "ShippingWeight" STRING   NOT NULL,
-    "IsAmazonSeller" STRING   NOT NULL,
+    "UniqeID" VARCHAR(255)   NOT NULL,
+    "productName" VARCHAR(255)   NOT NULL,
+    "category" VARCHAR(255)   NOT NULL,
+    "ShippingWeight" VARCHAR(100)   NOT NULL,
+    "IsAmazonSeller" VARCHAR(100)   NOT NULL,
     CONSTRAINT "pk_ProductDetails" PRIMARY KEY (
         "UniqeID"
      )
@@ -17,28 +17,28 @@ CREATE TABLE "ProductDetails" (
 CREATE TABLE "CustomerDetails" (
     "CustomerID" INT   NOT NULL,
     "Age" INT   NOT NULL,
-    "Gender" string   NOT NULL,
-    "ItemPurchased" string   NOT NULL,
-    "Category" STRING   NOT NULL,
+    "Gender" VARCHAR(100)   NOT NULL,
+    "ItemPurchased" VARCHAR(100)   NOT NULL,
+    "Category" VARCHAR(100)   NOT NULL,
     "PurchaseAmount" INT   NOT NULL,
-    "Location" STRING   NOT NULL,
-    "Size" STRING   NOT NULL,
-    "Color" string   NOT NULL,
-    "Season" string   NOT NULL,
-    "ReviewRating" numeric(2,2)   NOT NULL,
+    "Location" VARCHAR(100)   NOT NULL,
+    "Size" VARCHAR(50)   NOT NULL,
+    "Color" VARCHAR(100)   NOT NULL,
+    "Season" VARCHAR(100)   NOT NULL,
+    "ReviewRating" DEMICAL(2,2)   NOT NULL,
     "SubscriptionStatus" STRING   NOT NULL,
-    "ShippingType" string   NOT NULL,
-    "DiscountApplied" STRING   NOT NULL,
-    "PromoCodeUsed" STRING   NOT NULL,
+    "ShippingType" VARCHAR(50)   NOT NULL,
+    "DiscountApplied" VARCHAR(50)   NOT NULL,
+    "PromoCodeUsed" VARCHAR(50)   NOT NULL,
     "PreviousPurchases" INT   NOT NULL,
-    "PaymentMethod" STRING   NOT NULL,
-    "FrequencyofPurchases" STRING   NOT NULL
+    "PaymentMethod" VARCHAR(50)   NOT NULL,
+    "FrequencyofPurchases" VARCHAR(50)   NOT NULL
 );
 
 CREATE TABLE "SalesData" (
     "userID" INT   NOT NULL,
-    "productID" STRING   NOT NULL,
-    "interactionType" STRING   NOT NULL,
+    "productID" VARCHAR(255)   NOT NULL,
+    "interactionType" VARCHAR(255)   NOT NULL,
     "timeStamp" DATE   NOT NULL,
     CONSTRAINT "pk_SalesData" PRIMARY KEY (
         "userID"
