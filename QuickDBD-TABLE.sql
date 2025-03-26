@@ -26,7 +26,7 @@ CREATE TABLE "CustomerDetails" (
     "Color" VARCHAR(100)   NOT NULL,
     "Season" VARCHAR(100)   NOT NULL,
     "ReviewRating" DEMICAL(2,2)   NOT NULL,
-    "SubscriptionStatus" STRING   NOT NULL,
+    "SubscriptionStatus" VARCHAR(50)   NOT NULL,
     "ShippingType" VARCHAR(50)   NOT NULL,
     "DiscountApplied" VARCHAR(50)   NOT NULL,
     "PromoCodeUsed" VARCHAR(50)   NOT NULL,
