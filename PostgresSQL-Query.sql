@@ -57,7 +57,7 @@ FROM SalesData s
 RIGHT JOIN CustomerDetails c ON s.userID = c.CustomerID
 RIGHT JOIN ProductDetails p ON s.productid = p.uniqeid
 );
-Create table Customer
+-- Create table Customer
 CREATE TABLE Customer AS (
     SELECT c.customerid, c.age,c.gender,c.frequencyofpurchases,
             c.season, c.shippingtype, s.interactiontype, s.timestamp
